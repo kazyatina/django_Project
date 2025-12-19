@@ -3,7 +3,7 @@
 Веб-приложение для интернет-магазина.
 ___
 ## Активация django в виртуальном окружении
-- для poetry: poetry add django
+- для poetry: poetry add django далее poetry export -f requirements.txt --output requirements.txt
 - для venv: pip install django далее pip freeze > requirements.txt
 ___
 ## Работа с django
@@ -11,6 +11,23 @@ ___
 - django-admin startproject <название_проекта> - инициализирует проект в отдельной директории
 - python manage.py startapp <название_приложения> - создает директорию с приложением
 - python manage.py  runserver - запускает работу приложения
+- pip install psycopg2-binary - установка библиотеки для работы с базами данных Postgres
+- pip freeze > requirements.txt - обновление файла с зависимостями
+- pip install python-dotenv - установка библиотеки для работы с защитой секретных данных
+- pip freeze > requirements.txt - обновление файла с зависимостями
+- pip install Pillow - установка библиотеки для работы с изображениями
+- python manage.py makemigrations app_name - создает миграцию, которая зафиксирует эти изменения.
+- python manage.py migrate - применяет миграцию к базе данных
+- - python manage.py migrate app_name migration_name - откатить миграцию до конкретной версии, указав имя приложения и номер миграции
+- - python manage.py migrate app_name zero - откатить все миграции и вернуть базу данных в состояние, когда ни одна миграция не была применена
+- python manage.py createsuperuser - Для создания суперпользователя
+- pip install ipython - установите пакет ipython, Чтобы Django shell был удобным в использовании
+- poetry add ipython - для poetry
+- python manage.py shell -i ipython - запустите Django shell с IPython
+- Для выхода из Django Shell используйте команды exit(), quit() или сочетание клавиш Ctrl + D или Ctrl + Z
+- python -Xutf8 manage.py dumpdata [приложение].[модель] --output [файл.json] --indent 4 - Базовая команда для экспорта данных модели в файл
+- python manage.py loaddata файл.json --format json - Загрузка данных с указанием формата файла на Windows
+- python manage.py команда - Вызов кастомной команды
 ___
 ## Создание и настройка приложения `catalog`:
 
