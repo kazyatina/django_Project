@@ -210,3 +210,5 @@ pyproject.toml
 .idea/pythonProject_opp.iml
 .idea/vcs.xml
 .idea/workspace.xml
+
+students/
