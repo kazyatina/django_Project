@@ -212,3 +212,5 @@ pyproject.toml
 .idea/workspace.xml
 
 students/
+media/*
+
