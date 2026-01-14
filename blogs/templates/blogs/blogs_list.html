@@ -1,0 +1,49 @@
+{% extends 'blogs/base.html' %}
+{% load my_tags %}
+
+{% block title %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h3>Блог</h3>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a type="button" class="btn active" href="{% url 'blogs:create_blog' %}">Создать запись</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row text-center">
+    {% for blog in object_list %}
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row col-12">
+                    <div class="col-5">
+                        <img src="{{ blog.image | media_filter }}" class="card-img-top" alt="{{ blog.title }}">
+                    </div>
+                    <div class="col-7">
+                        <figure>
+                            <blockquote class="blockquote">
+                                <p class="mt-2">{{ blog.title }}</p>
+                            </blockquote>
+                            <figcaption class="blockquote-footer mt-2">
+                                {{ blog.content }}
+                            </figcaption>
+
+                        </figure>
+                        <a href="{% url 'blogs:details_blog' blog.pk %}" class="card-link">Посмотреть</a>
+                        <a href="{% url 'blogs:update_blog' blog.pk %}" class="card-link">Редактировать</a>
+                        <a href="{% url 'blogs:delete_blog' blog.pk %}" class="card-link">Удалить</a>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Просмотры: {{blog.views}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+{% endblock %}
