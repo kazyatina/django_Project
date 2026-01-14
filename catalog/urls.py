@@ -1,7 +1,6 @@
 from django.urls import path
-from catalog.views import home, contacts, post
-
-app_name = 'catalog'  # пространство имен, всегда указывать для связки
+from catalog.views import home, contacts, post, product_list, product_detail, main_page, form_to_add_product
+app_name = "catalog"  # пространство имен, всегда указывать для связки
 
 # urlpatterns = [  # Маршруты связывают адреса с контролерами
 #     path('show_data/', views.show_data, name='show_data'),
@@ -13,7 +12,14 @@ app_name = 'catalog'  # пространство имен, всегда указ
 # ]
 
 urlpatterns = [  # Маршруты связывают адреса с контролерами
-    path('', home, name='home'),
+    path("", main_page, name='main_page'),
+    path("home/", home, name="home"),
     # после создания маршрута нужно зарегить его в config urls
-    path('contacts/', contacts, name='contacts'),
-    path('post/', post, name='post')]
+    path("contacts/", contacts, name="contacts"),
+    path("post/", post, name="post"),
+    path("form/", form_to_add_product, name="form"),
+    path("product_list/", product_list, name="product_list"),
+    path("product_detail/<int:pk>/", product_detail, name="product_detail"),
+
+]
+

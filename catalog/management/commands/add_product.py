@@ -9,18 +9,38 @@ class Command(BaseCommand):
         Product.objects.all().delete()
         Category.objects.all().delete()
 
-        category, _ = Category.objects.get_or_create(name='Новый год', description='украшения')
+        category, _ = Category.objects.get_or_create(
+            name="Новый год", description="украшения"
+        )
 
         products = [
-            {'name': 'Игрушки', 'description': 'на ёлку', 'image': '', 'price': 100, 'created_at': '2025-12-20',
-             'updated_at': '2025-12-20', 'category': category},
-            {'name': 'Гирлянда', 'description': 'на улицу', 'image': '', 'price': 100, 'created_at': '2025-12-20',
-             'updated_at': '2025-12-20', 'category': category},
+            {
+                "name": "Игрушки",
+                "description": "на ёлку",
+                "image": "",
+                "price": 100,
+                "created_at": "2025-12-20",
+                "updated_at": "2025-12-20",
+                "category": category,
+            },
+            {
+                "name": "Гирлянда",
+                "description": "на улицу",
+                "image": "",
+                "price": 100,
+                "created_at": "2025-12-20",
+                "updated_at": "2025-12-20",
+                "category": category,
+            },
         ]
 
         for pro in products:
             product, created = Product.objects.get_or_create(**pro)
             if created:
-                self.stdout.write(self.style.SUCCESS(f'Успешно добавлен продукт {product.name}'))
+                self.stdout.write(
+                    self.style.SUCCESS(f"Успешно добавлен продукт {product.name}")
+                )
             else:
-                self.stdout.write(self.style.WARNING(f'Продукт {product.name} уже существует'))
+                self.stdout.write(
+                    self.style.WARNING(f"Продукт {product.name} уже существует")
+                )
