@@ -10,12 +10,13 @@ ___
 - django-admin startproject config . - инициализирует проект в корневой директории
 - django-admin startproject <название_проекта> - инициализирует проект в отдельной директории
 - python manage.py startapp <название_приложения> - создает директорию с приложением
-- python manage.py  runserver - запускает работу приложения
+- запускает работу приложения
 - pip install psycopg2-binary - установка библиотеки для работы с базами данных Postgres
 - pip freeze > requirements.txt - обновление файла с зависимостями
 - pip install python-dotenv - установка библиотеки для работы с защитой секретных данных
 - pip freeze > requirements.txt - обновление файла с зависимостями
 - pip install Pillow - установка библиотеки для работы с изображениями
+- python manage.py runserver
 - python manage.py makemigrations app_name - создает миграцию, которая зафиксирует эти изменения.
 - python manage.py migrate - применяет миграцию к базе данных
 - - python manage.py migrate app_name migration_name - откатить миграцию до конкретной версии, указав имя приложения и номер миграции
