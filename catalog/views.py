@@ -1,47 +1,43 @@
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
-
+from django.shortcuts import render
+from django.views.generic import ListView, DetailView, TemplateView
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from catalog.models import Product, Category
 
 
-def home(request):
-    return render(request, "catalog/home.html")
+class ProductListView(ListView):
+    model = Product
+    template_name = 'catalog/product_list.html'
+    context_object_name = 'products'
 
 
-def contacts(request):
-    return render(request, "catalog/contacts.html")
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'catalog/product_detail.html'
+    # context_object_name = 'product'
 
 
-def post(request):
-    if request.method == "POST":
-        # Получение данных из формы
-        name = request.POST.get("name")
-        phone = request.POST.get("phone")
-        message = request.POST.get("message")
-        # Обработка данных (например, сохранение в БД, отправка email и т. д.)
-        # Здесь мы просто возвращаем простой ответ
-        return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
-    # return render(request, 'catalog/contacts.html')
+class ProductCreateView(CreateView):
+    model = Product
+    fields = ('name', 'description', 'image', 'price', 'category')
+    success_url = reverse_lazy('catalog:product_list')
 
 
-def product_list(request):
-    products2 = Product.objects.all()
-    context = {
-        "products2": products2,
-    }
-    return render(request, "catalog/product_list.html", context=context)
+class ProductUpdateView(UpdateView):
+    model = Product
+    fields = ('name', 'description', 'image', 'price', 'category')
+    success_url = reverse_lazy('catalog:product_list')
 
 
-def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    context = {"product": product}
-    return render(request, "catalog/product_detail.html", context=context)
+class ProductDeleteView(DeleteView):
+    model = Product
+    success_url = reverse_lazy('catalog:product_list')
 
 
-def main_page(request):
-    products = Product.objects.all()
-    context = {"products": products,}
-    return render(request, 'catalog/main.html', context)
+class ContactPageView(TemplateView):
+    model = Product
+    template_name = "catalog/contacts.html"
 
 def form_to_add_product(request):
     if request.method == 'POST':

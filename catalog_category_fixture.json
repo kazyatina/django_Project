@@ -1,14 +1,6 @@
 [
 {
     "model": "catalog.category",
-    "pk": 1,
-    "fields": {
-        "name": "test",
-        "description": "test"
-    }
-},
-{
-    "model": "catalog.category",
     "pk": 2,
     "fields": {
         "name": "Еда",

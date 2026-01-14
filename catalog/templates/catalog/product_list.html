@@ -1,30 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    <title>Список продуктов</title>
-</head>
-<body>
-<div class="container mt-5">
-    <h1 class="mb-4">Список продуктов</h1>
-    <ul class="list-group">
-        {% for pro in products2 %}
-        <li class="list-group-item d-flex justify-content-between align-items-center {% if pro.category == 'food' %}list-group-item-primary{% elif pro.category == 'chemical' %}list-group-item-success{% elif pro.category == 'pet' %}list-group-item-danger{% endif %}">
-            {{pro.name}} - {{pro.price}} - {{pro.category}}
-            <span class="badge badge-primary badge-pill">
-                        {% if pro.category == 'food' %}
-                            Еда
-                        {% elif pro.category == 'chemical' %}
-                            Бытовая химия
-                        {% elif pro.category == 'pet' %}
-                            Корм для животных
-                        {% endif %}
-            </span>
-            {% endfor %}
-    </ul>
+{%extends 'catalog/base.html'%}
+{% load static %}
+{%load my_tags%}
+{%block content%}
+<div class="container">
+    <div class="row mb-2">
+        {%for products in objects_list%}
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <h3 class="mb-0">{{products.name}}</h3>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>Описание: {{products.description|truncatechars:100}}</li>
+                        <li>Категория: {{products.category}}</li>
+                        <h3 class="mb-0">{{products.price}} руб.</h3>
+                    </ul>
+                    <a href="{% url 'catalog:product_detail' pro.pk %}" class="icon-link gap-1 icon-link-hover stretched-link">
+                        Купить
+                        <svg class="bi" aria-hidden="true">
+                            <use xlink:href="{% url 'catalog:product_detail' pro.pk %}"></use>
+                        </svg>
+                    </a>
+                    <a href="{% url 'catalog:product_update' pro.pk %}" class="icon-link gap-1 icon-link-hover stretched-link">
+                        Редактировать
+                        <svg class="bi" aria-hidden="true">
+                            <use xlink:href="{% url 'catalog:product_update' pro.pk %}"></use>
+                        </svg>
+                    </a>
+                    <a href="{% url 'catalog:product_delete' pro.pk %}" class="icon-link gap-1 icon-link-hover stretched-link">
+                        Удалить
+                        <svg class="bi" aria-hidden="true">
+                            <use xlink:href="{% url 'catalog:product_delete' pro.pk %}"></use>
+                        </svg>
+                    </a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <img src="{{ pro.image| media_filter }}" class="img-thumbnail" alt="{{ pro.name }}">
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
 </div>
-<script src="/static/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+{%endblock%}
