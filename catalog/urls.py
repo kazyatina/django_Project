@@ -1,5 +1,9 @@
 from django.urls import path
-from catalog.views import home, contacts, post, product_list, product_detail, main_page, form_to_add_product
+from catalog.views import ProductDetailView, ProductCreateView, ProductUpdateView, ProductListView, ProductDeleteView, \
+    ContactPageView
+# from catalog.views import contacts
+
+# form_to_add_product home, post,
 app_name = "catalog"  # пространство имен, всегда указывать для связки
 
 # urlpatterns = [  # Маршруты связывают адреса с контролерами
@@ -12,14 +16,20 @@ app_name = "catalog"  # пространство имен, всегда указ
 # ]
 
 urlpatterns = [  # Маршруты связывают адреса с контролерами
-    path("", main_page, name='main_page'),
-    path("home/", home, name="home"),
-    # после создания маршрута нужно зарегить его в config urls
-    path("contacts/", contacts, name="contacts"),
-    path("post/", post, name="post"),
-    path("form/", form_to_add_product, name="form"),
-    path("product_list/", product_list, name="product_list"),
-    path("product_detail/<int:pk>/", product_detail, name="product_detail"),
+    # path("", main_page, name='main_page'),
+    # path("home/", home, name="home"),
+    # # после создания маршрута нужно зарегить его в config urls
+    # path("contacts/", contacts, name="contacts"),
+    # path("post/", post, name="post"),
+    # path("form/", form_to_add_product, name="form"),
+    # path("product_list/", product_list, name="product_list"),
+    # path("product_detail/<int:pk>/", product_detail, name="product_detail"),
 
+    path("", ProductListView.as_view(), name="product_list"),  # main page
+    path("contacts/", ContactPageView.as_view(), name="contacts"),
+    path("products/create/", ProductCreateView.as_view(), name="product_create"),  # form
+    path("products/<int:pk>/update/", ProductUpdateView.as_view(), name="product_update"),  # form update
+    path("products/detail/<int:pk>/", ProductDetailView.as_view(), name="product_detail"),
+    path("products/<int:pk>/delete/", ProductDeleteView.as_view(), name="product_delete"),
 ]
 

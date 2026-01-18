@@ -1,0 +1,37 @@
+{% extends 'blogs/base.html' %}
+{% load my_tags %}
+
+{% block title %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h3>Блог: {{object.title}}</h3>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row text-center">
+        <div class="col-1">
+            <div class="col-12">
+                <div class="card" style="width: 58rem;">
+                    <img src="{{ object.image | media_filter }}" class="card-img-top" alt="{{ object.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{object.title}}</h5>
+                        <p class="card-text">{{object.content}}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Описание: {{object.content|truncatechars:25}}</li>
+                        <li class="list-group-item">Просмотры: {{object.views}}</li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="{% url 'blogs:home_blogs' %}" class="card-link">Назад</a>
+                        <a href="{% url 'blogs:update_blog' object.pk %}" class="card-link">Редактировать</a>
+                        <a href="{% url 'blogs:delete_blog' object.pk %}" class="card-link">Удалить</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-1">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

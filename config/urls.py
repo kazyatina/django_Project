@@ -27,4 +27,5 @@ urlpatterns = [
     # students/urls.py и связывает их с пространством имен 'students'
     # path('students/', include('students.urls', namespace='students')),
     path("", include("catalog.urls", namespace="catalog")),
+    path("blogs/", include("blogs.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
