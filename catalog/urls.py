@@ -8,9 +8,7 @@ from catalog.views import (
     ContactPageView,
 )
 
-# from catalog.views import contacts
 
-# form_to_add_product home, post,
 app_name = "catalog"  # пространство имен, всегда указывать для связки
 
 # urlpatterns = [  # Маршруты связывают адреса с контролерами

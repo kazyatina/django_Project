@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, TemplateView
@@ -19,7 +20,7 @@ class ProductDetailView(DetailView):
     # context_object_name = 'product'
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     # fields = ('name', 'description', 'image', 'price', 'category')
@@ -30,7 +31,7 @@ class ProductCreateView(CreateView):
         return render(request, "product_form.html", {"form": form})
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
 
@@ -44,7 +45,7 @@ class ProductUpdateView(UpdateView):
         return render(request, "product_form.html", {"form": form})
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:product_list")
 
