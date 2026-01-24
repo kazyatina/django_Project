@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import CustomUser
+
 # from django.contrib.auth.admin import UserAdmin
+
 
 @admin.register(CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
@@ -9,6 +11,4 @@ class CustomUserAdmin(admin.ModelAdmin):
     search_fields = ("email", "country", "phone_number")
 
 
-
 # admin.site.register(UserAdmin)
-
