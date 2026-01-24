@@ -6,33 +6,18 @@
         <div class="col-6">
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <div class="mb-3">
-        <label for="name" class="form-label">Название товара</label>
-        <input type="text" name="name" class="form-control" id="name" placeholder="Введите название товара">
-    </div>
-    <div class="mb-3">
-        <label for="description" class="form-label">Описание</label>
-        <input type="text" name="description" class="form-control" id="description" placeholder="Введите описание товара">
-    </div>
-    <div class="mb-3">
-        <label for="price" class="form-label">Цена</label>
-        <input type="text" name="price" class="form-control" id="price" placeholder="Введите цену товара в рублях">
-    </div>
-    <div class="mb-3">
-        <label for="image" class="form-label">Изображение</label>
-        <input type="file" name="image" class="form-control" id="image">
-    </div>
-    <div class="mb-3">
-        <label for="category" class="form-label">Категория</label>
-        <input type="number" name="category" class="form-control" id="category">
-    </div>
-    <button type="submit" class="btn btn-primary">
+    {{ form.non_field_errors }}
+    {{ form.as_p }}
+    <input type="checkbox" name="checkbox" id="id_my_checkbox">
+    <label for="id_my_checkbox">Подтверждаю</label>
+    <button type="submit" class="btn btn-primary mt-4">
         {% if object %}
         Сохранить
         {% else %}
         Создать
         {% endif %}
     </button>
+
 </form>
         </div>
     </div>

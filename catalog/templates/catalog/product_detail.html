@@ -11,20 +11,18 @@
     <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
         <div class="col mb-3">
             <div class="card mb-4 rounded-3 shadow-sm">
-                <div class="card-header py-3"><h4 class="my-0 fw-normal">{{objects.name}}</h4></div>
+                <div class="card-header py-3"><h4 class="my-0 fw-normal">{{object.name}}</h4></div>
                 <div class="card mb-4 rounded-3 shadow-sm">
-                    <img src="{{ objects.image.url }}" class="img-thumbnail" alt="{{ objects.name }}">
+                    <img src="{{object.image.url}}" class="img-thumbnail" alt="{{ object.name }}">
                 </div>
-                <div class="card-body"><h1 class="card-title pricing-card-title">{{objects.price}} руб.</h1>
+                <div class="card-body"><h1 class="card-title pricing-card-title">{{object.price}} руб.</h1>
                     <ul class="list-unstyled mt-3 mb-4">
-                        <li>Описание: {{objects.description|truncatechars:100}}</li>
-                        <li>Категория: {{objects.category}}</li>
+                        <li>Описание: {{object.description|truncatechars:100}}</li>
+                        <li>Категория: {{object.category}}</li>
                     </ul>
-                    <a href="{% url 'catalog:product_list' %}" class="icon-link gap-1 icon-link-hover stretched-link">
+                    <a href="{% url 'catalog:product_list' %}" class="btn btn-success">
                         Купить
-                        <svg class="bi" aria-hidden="true">
-                            <use xlink:href="{% url 'catalog:product_list' %}"></use>
-                        </svg>
+
                     </a>
                     <a href="{% url 'catalog:product_list' %}" class="icon-link gap-1 icon-link-hover stretched-link">
                         Назад

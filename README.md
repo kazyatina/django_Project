@@ -3,14 +3,15 @@
 Веб-приложение для интернет-магазина.
 ___
 ## Активация django в виртуальном окружении
+- python3 -m venv venv - Создайте виртуальное окружение
+- venv\Scripts\activate (Windows) - Активируйте виртуальное окружение
 - для poetry: poetry add django далее poetry export -f requirements.txt --output requirements.txt
 - для venv: pip install django далее pip freeze > requirements.txt
 ___
 ## Работа с django
 - django-admin startproject config . - инициализирует проект в корневой директории
-- django-admin startproject <название_проекта> - инициализирует проект в отдельной директории
-- python manage.py startapp <название_приложения> - создает директорию с приложением
-- запускает работу приложения
+- вариант 2 - django-admin startproject <название_проекта> - инициализирует проект в отдельной директории
+- python manage.py startapp <название_приложения> - создает директорию с приложением запускает работу приложения
 - pip install psycopg2-binary - установка библиотеки для работы с базами данных Postgres
 - pip freeze > requirements.txt - обновление файла с зависимостями
 - pip install python-dotenv - установка библиотеки для работы с защитой секретных данных
