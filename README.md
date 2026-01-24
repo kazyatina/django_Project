@@ -31,6 +31,10 @@ ___
 - python manage.py loaddata файл.json --format json - Загрузка данных с указанием формата файла на Windows
 - python manage.py команда - Вызов кастомной команды
 ___
+## Приложения
+- catalog
+- blog
+- users
 ## Создание и настройка приложения `catalog`:
 
 *   Создано новое Django-приложение под названием `catalog` с помощью команды `python manage.py startapp catalog`.
