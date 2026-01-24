@@ -1,0 +1,23 @@
+{%extends 'catalog/base.html'%}
+{% load static %}
+{%load my_tags%}
+{% block title %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h3>Информация о пользователе</h3>
+</div>
+{% endblock %}
+{%block content%}
+<div class="container mt-5">
+    <div class="card" style="width: 18rem;">
+        <img src="{{ object.avatar | media_filter }}" class="card-img-top img-thumbnail" alt="{{ object.username }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ object.username }}</h5>
+            <p>ID: {{ object.id }}</p>
+            <p>Почта: {{object.email}}</p>
+            <p>Телефон: {{ object.phone_number }}</p>
+            <p>Страна: {{object.country}}</p>
+            <a href="{% url 'users:user_update' object.pk %}" class="btn btn-primary">Редактировать</a>
+        </div>
+    </div>
+</div>
+{%endblock%}

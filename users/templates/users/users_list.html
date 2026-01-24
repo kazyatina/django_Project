@@ -1,0 +1,46 @@
+{%extends 'catalog/base.html'%}
+{% load static %}
+{%load my_tags%}
+{%block content%}
+<div class="card">
+    <div class="card-header align-items-center">
+        <h5 class="card-action-title mb-5">Пользователи({{ object_list|length }})</h5>
+    </div>
+    <div>
+        {% if user.is_authenticated %}
+        {% for recipient in object_list %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Почта</th>
+                <th scope="col">Телефон</th>
+                <th scope="col">Страна</th>
+                <th scope="col">Аватар</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr>
+                <th scope="row">{{ recipient.id }}</th>
+                <td>{{ recipient.email }}</td>
+                <td>{{ recipient.phone_number }}</td>
+                <td>{{ recipient.country }}</td>
+                <td>{{ recipient.avatar }}</td>
+                <td>
+                    <a class="btn btn-success " href="{% url 'users:user_detail' recipient.pk %}" role="button">Посмотреть</a>
+                </td>
+                <td>
+                    <a class="btn btn-warning " href="{% url 'users:user_update' recipient.pk %}" role="button">Редактировать</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        {% endfor %}
+        {% else %}
+        <p> Доступ только авторизованным пользователям</p>
+        {% endif %}
+    </div>
+</div>
+
+{%endblock%}
