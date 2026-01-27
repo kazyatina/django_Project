@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from django.forms import fields, BooleanField
+from django.forms import fields, BooleanField, ModelForm
 
 from catalog.models import Product
 
@@ -25,47 +25,58 @@ class StyleMixin:
             else:
                 field.widget.attrs['class'] = "form-control"
 
-                # Настройка атрибутов виджета для поля 'name'
-                self.fields["name"].widget.attrs.update(
-                    {
-                        "class": "form-control",  # Добавление CSS-класса для стилизации поля
-                        "placeholder": "Введите название",  # Текст подсказки внутри поля
-                    }
-                )
-                self.fields["description"].widget.attrs.update(
-                    {
-                        "class": "form-control",  # Добавление CSS-класса для стилизации поля
-                        "placeholder": "Введите описание",  # Текст подсказки внутри поля
-                    }
-                )
-                self.fields["image"].widget.attrs.update(
-                    {
-                        "class": "form-control",  # Добавление CSS-класса для стилизации поля
-                        "placeholder": "Прикрепите изображение",  # Текст подсказки внутри поля
-                    }
-                )
-                self.fields["price"].widget.attrs.update(
-                    {
-                        "class": "form-control",  # Добавление CSS-класса для стилизации поля
-                        "placeholder": "Введите цену",  # Текст подсказки внутри поля
-                    }
-                )
-                self.fields["category"].widget.attrs.update(
-                    {
-                        "class": "form-control",  # Добавление CSS-класса для стилизации поля
-                        "placeholder": "Введите категорию",  # Текст подсказки внутри поля
-                    }
-                )
+        # Настройка атрибутов виджета для поля 'name'
+        self.fields["name"].widget.attrs.update(
+            {
+                "class": "form-control",  # Добавление CSS-класса для стилизации поля
+                "placeholder": "Введите название",  # Текст подсказки внутри поля
+            }
+        )
+        self.fields["description"].widget.attrs.update(
+            {
+                "class": "form-control",  # Добавление CSS-класса для стилизации поля
+                "placeholder": "Введите описание",  # Текст подсказки внутри поля
+            }
+        )
+        self.fields["image"].widget.attrs.update(
+            {
+                "class": "form-control",  # Добавление CSS-класса для стилизации поля
+                "placeholder": "Прикрепите изображение",  # Текст подсказки внутри поля
+            }
+        )
+        self.fields["price"].widget.attrs.update(
+            {
+                "class": "form-control",  # Добавление CSS-класса для стилизации поля
+                "placeholder": "Введите цену",  # Текст подсказки внутри поля
+            }
+        )
+        self.fields["category"].widget.attrs.update(
+            {
+                "class": "form-control",  # Добавление CSS-класса для стилизации поля
+                "placeholder": "Введите категорию",  # Текст подсказки внутри поля
+            }
+        )
+
+
+class ModerationProductForm(ModelForm):
+
+    class Meta:
+        model = Product
+        fields = ("name", "description")
+
+
+class ProductsModeratorForm(ModelForm):
+
+    class Meta:
+        model = Product
+        # отображение колонок
+        fields = ("status",)
 
 class ProductForm(StyleMixin,forms.ModelForm):
     class Meta:
         model = Product
         fields = ("name", "description", "image", "price", "category")
-
-    # def __init__(self, *args, **kwargs):
-    #     """Стилизация формы."""
-    #     super(ProductForm, self).__init__(*args, **kwargs)
-
+        exclude = ("owner",)
 
 
     def clean_name(self):

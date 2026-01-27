@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import CustomUser
+
 """Product:
 наименование,
 описание,
@@ -56,6 +58,18 @@ class Product(models.Model):
         related_name="products",
         verbose_name="Категория",
     )  # поле для создания внешнего ключа на другую модель
+    owner = models.ForeignKey(CustomUser, verbose_name='Владелец', blank=True, null=True, help_text='Введите владельца', on_delete=models.CASCADE)
+
+    PUBLIC_STATUS = [
+        ('public', 'Опубликовано'),
+        ('unpublic', 'Не опубликовано')
+    ]
+    status = models.CharField(
+        max_length=20,
+        choices=PUBLIC_STATUS,
+        default='unpublic',
+        verbose_name='Статус публикации'
+    )
 
     def __str__(self):
         """Определяет строковое представление объекта"""
@@ -72,3 +86,7 @@ class Product(models.Model):
         ordering = ["name"]
         # db_table указывает имя таблицы в базе данных, к которой привязана модель
         # db_table = "django_project"
+        permissions = [
+            ("can_unpublish_product", "Право на публикацию товара"),
+            ("can_delete_product", "Право на удаление продукта"),
+        ]

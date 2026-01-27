@@ -1,11 +1,12 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, TemplateView
 from django.urls import reverse_lazy, reverse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from catalog.models import Product, Category
-from catalog.forms import ProductForm, CheckboxForm
+from catalog.forms import ProductForm, CheckboxForm, ProductsModeratorForm, ModerationProductForm
 
 
 class ProductListView(ListView):
@@ -26,6 +27,13 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     # fields = ('name', 'description', 'image', 'price', 'category')
     success_url = reverse_lazy("catalog:product_list")
 
+    def form_valid(self, form):
+        product = form.save()
+        user = self.request.user  # Устанавливаем владельца на текущего пользователя
+        product.owner = user
+        product.save()
+        return super().form_valid(form)
+
     def checkbox(request):
         form = CheckboxForm()
         return render(request, "product_form.html", {"form": form})
@@ -44,10 +52,28 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         form = CheckboxForm()
         return render(request, "product_form.html", {"form": form})
 
+    def get_form_class(self):
+        user = self.request.user
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+        if user == self.object.owner:
+            return ProductForm
+        if user.has_perm('catalog.can_unpublish_product'):
+            return ProductsModeratorForm
+        raise PermissionDenied
+
+
+class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:product_list")
+    permission_required = 'catalog.can_unpublish_product'
+
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner:
+            return ProductForm
+        if user.has_perm("can_delete_product"):
+            return ModerationProductForm
+        raise PermissionDenied
 
 
 class ContactPageView(TemplateView):
