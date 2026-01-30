@@ -5,7 +5,7 @@ from catalog.views import (
     ProductUpdateView,
     ProductListView,
     ProductDeleteView,
-    ContactPageView,
+    ContactPageView, ProductUnpublishView,
 )
 
 
@@ -43,4 +43,5 @@ urlpatterns = [  # Маршруты связывают адреса с конт�
     path(
         "products/<int:pk>/delete/", ProductDeleteView.as_view(), name="product_delete"
     ),
+    path("products/<int:pk>/unpublish/", ProductUnpublishView.as_view(), name="product_unpublish"),
 ]

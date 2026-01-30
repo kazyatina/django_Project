@@ -87,6 +87,6 @@ class Product(models.Model):
         # db_table указывает имя таблицы в базе данных, к которой привязана модель
         # db_table = "django_project"
         permissions = [
-            ("can_unpublish_product", "Право на публикацию товара"),
-            ("can_delete_product", "Право на удаление продукта"),
+            ("can_unpublish_product", "Can unpublish product"),
+            ("can_delete_product", "Can delete product"),
         ]

@@ -1,0 +1,18 @@
+{%extends 'catalog/base.html'%}
+{%block content%}
+<div class="container mt-5">
+    <div class="bd-example m-0 border-0">
+        <div class="card" style="width: 50rem;">
+            <div class="card-body">
+                <h5 class="card-title">Отменить публикацию {{object.name}}?</h5>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <button class="btn active btn-secondary" type="submit">Отменить публикацию</button>
+                    <a class="btn active" type="submit" href="{% url 'catalog:product_list' %}">Назад</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
