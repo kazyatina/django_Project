@@ -1,0 +1,32 @@
+{%extends 'catalog/base.html'%}
+{% load static %}
+{%load my_tags%}
+{% block title %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h3>Информация о продукте</h3>
+</div>
+{% endblock %}
+{%block content%}
+<div class="container">
+    <div class="row mb-2">
+        {% for product in categories %}
+        <div class="col">
+            <div class="card w-75">
+                <img src="{{ product.image | media_filter }}" class="card-img-top" alt="{{ product.name }}"
+                     height=300>
+                <div class="card-body">
+                    <h5 class="card-title">{{product.name}}</h5>
+                    <p class="card-text">{{product.description|truncatechars:100}}</p>
+                </div>
+                {% if user.is_authenticated %}
+                <a href="{% url 'catalog:product_detail' product.pk %}"
+                   class="btn btn-sm btn-block btn-outline-primary">Полная информация</a>
+                {% else %}
+                <p>Пройдите регистрацию</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{%endblock%}
