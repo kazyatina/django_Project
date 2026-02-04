@@ -5,9 +5,11 @@
 <div class="container">
     <div class="row mb-2">
         {%for products in object_list%}
+        {% if products.status == 'public'%}
         <div class="col-md-6">
             <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                 <div class="col p-4 d-flex flex-column position-static">
+
                     <h3 class="mb-0">{{products.name}}</h3>
                     <ul class="list-unstyled mt-3 mb-4">
                         <li>Описание: {{products.description|truncatechars:100}}</li>
@@ -16,8 +18,16 @@
                     </ul>
                     {% if user.is_authenticated %}
                     <a class="btn btn-success " href="{% url 'catalog:product_detail' products.pk %}" role="button">Посмотреть</a>
+                    {% if products.owner%}
                     <a class="btn btn-warning " href="{% url 'catalog:product_update' products.pk %}" role="button">Редактировать</a>
+                    {% endif %}
+                    {% if 'catalog.can_unpublish_product' in perms %}
+                    <a class="btn btn-secondary " href="{% url 'catalog:product_unpublish' products.pk %}">
+                        Отменить публикацию</a>
+                    {% endif %}
+                    {% if perms.catalog.can_delete_product or user == products.owner%}
                     <a class="btn btn-danger " href="{% url 'catalog:product_delete' products.pk %}">Удалить</a>
+                    {% endif %}
                     {% endif %}
                 </div>
                 <div class="col-auto d-none d-lg-block">
@@ -25,6 +35,13 @@
                 </div>
             </div>
         </div>
+        {% else %}
+        <p>Продукт скрыт из публикации</p>
+        {% if 'catalog.can_unpublish_product' in perms %}
+        <a class="btn btn-secondary" href="{% url 'catalog:product_unpublish' products.pk %}">
+            Опубликовать</a>
+        {% endif %}
+        {% endif %}
         {%endfor%}
     </div>
 </div>

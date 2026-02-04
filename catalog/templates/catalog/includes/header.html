@@ -3,11 +3,12 @@
         <h5 class="my-1 mr-md-auto font-weight-normal">6рочка</h5>
         {% if user.is_authenticated %}
         <nav class="ms-5">
-            <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:product_list' %}">Каталог</a>
-            <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:contacts' %}">Контакты</a>
+            <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:product_list' %}">Продукты</a>
             <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:product_create' %}">Добавить продукт</a>
+            <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:categories_list' %}">Категории</a>
             <a class="p-2 btn btn-outline-primary" href="{% url 'blogs:home_blogs' %}">Блог</a>
             <a class="p-2 btn btn-outline-primary" href="{% url 'users:users_list' %}">Пользователи</a>
+            <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:contacts' %}">Контакты</a>
             <a class="p-2 btn btn-outline-primary" href="{% url 'users:logout' %}">Выход</a>
         </nav>
         {% else %}

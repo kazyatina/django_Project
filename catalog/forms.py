@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from django.forms import fields, BooleanField
+from django.forms import fields, BooleanField, ModelForm
 
 from catalog.models import Product
 
@@ -19,58 +19,71 @@ class StyleMixin:
     def __init__(self, *args, **kwargs):
         """Стилизация формы."""
         super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            if isinstance(field, BooleanField):
-                field.widget.attrs['class'] = "form-check-input"
-            else:
-                field.widget.attrs['class'] = "form-control"
+        # for field_name, field in self.fields.items():
+        #     if isinstance(field, BooleanField):
+        #         field.widget.attrs['class'] = "form-check-input"
+        #     else:
+        #         field.widget.attrs['class'] = "form-control"
 
-                # Настройка атрибутов виджета для поля 'name'
-                self.fields["name"].widget.attrs.update(
-                    {
-                        "class": "form-control",  # Добавление CSS-класса для стилизации поля
-                        "placeholder": "Введите название",  # Текст подсказки внутри поля
-                    }
-                )
-                self.fields["description"].widget.attrs.update(
-                    {
-                        "class": "form-control",  # Добавление CSS-класса для стилизации поля
-                        "placeholder": "Введите описание",  # Текст подсказки внутри поля
-                    }
-                )
-                self.fields["image"].widget.attrs.update(
-                    {
-                        "class": "form-control",  # Добавление CSS-класса для стилизации поля
-                        "placeholder": "Прикрепите изображение",  # Текст подсказки внутри поля
-                    }
-                )
-                self.fields["price"].widget.attrs.update(
-                    {
-                        "class": "form-control",  # Добавление CSS-класса для стилизации поля
-                        "placeholder": "Введите цену",  # Текст подсказки внутри поля
-                    }
-                )
-                self.fields["category"].widget.attrs.update(
-                    {
-                        "class": "form-control",  # Добавление CSS-класса для стилизации поля
-                        "placeholder": "Введите категорию",  # Текст подсказки внутри поля
-                    }
-                )
+        # Настройка атрибутов виджета для поля 'name'
+        self.fields["name"].widget.attrs.update(
+            {
+                "class": "form-control",  # Добавление CSS-класса для стилизации поля
+                "placeholder": "Введите название",  # Текст подсказки внутри поля
+            }
+        )
+        self.fields["description"].widget.attrs.update(
+            {
+                "class": "form-control",  # Добавление CSS-класса для стилизации поля
+                "placeholder": "Введите описание",  # Текст подсказки внутри поля
+            }
+        )
+        self.fields["image"].widget.attrs.update(
+            {
+                "class": "form-control",  # Добавление CSS-класса для стилизации поля
+                "placeholder": "Прикрепите изображение",  # Текст подсказки внутри поля
+            }
+        )
+        self.fields["price"].widget.attrs.update(
+            {
+                "class": "form-control",  # Добавление CSS-класса для стилизации поля
+                "placeholder": "Введите цену",  # Текст подсказки внутри поля
+            }
+        )
+        self.fields["category"].widget.attrs.update(
+            {
+                "class": "form-control",  # Добавление CSS-класса для стилизации поля
+                "placeholder": "Введите категорию",  # Текст подсказки внутри поля
+            }
+        )
+
+
+class ModerationProductForm(ModelForm):
+
+    class Meta:
+        model = Product
+        fields = ("name", "description")
+
+
+class ProductsModeratorForm(ModelForm):
+
+    class Meta:
+        model = Product
+        # отображение колонок
+        fields = ("status",)
 
 class ProductForm(StyleMixin,forms.ModelForm):
     class Meta:
         model = Product
         fields = ("name", "description", "image", "price", "category")
-
-    # def __init__(self, *args, **kwargs):
-    #     """Стилизация формы."""
-    #     super(ProductForm, self).__init__(*args, **kwargs)
-
+        exclude = ("owner",)
 
 
     def clean_name(self):
         """Валидация на запрещенные слова в названии."""
         name = self.cleaned_data.get("name")
+        if not name:
+            raise ValidationError("Поле name не может быть пустым")
         for word in SPAM_WORDS:
             if word in name:
                 raise ValidationError(
@@ -88,26 +101,25 @@ class ProductForm(StyleMixin,forms.ModelForm):
                 )
         return description
 
-    def clean(self):
-        """Валидация названия."""
-        cleaned_data = super().clean()
-        name = cleaned_data.get("name")
-        image = cleaned_data.get("image")
-        max_size = 5 * 1024 * 1024  # 5MB
-        valid_formats = ["jpeg", "jpg", "png"]
-        file_extension = image.name.split(".")[-1].lower()  # Получаем расширение файла
-
-        if file_extension not in valid_formats:
-            raise ValidationError(
-                "Недопустимый формат изображения. Разрешены: .jpeg, .jpg, .png"
-            )
-
-        if image and image.size > max_size:
-            self.add_error("image", "Размер изображения не должен превышать 5MB.")
-
-        if Product.objects.filter(name=name).exists():
-            raise ValidationError("Продукт с таким названием уже существует")
-        return cleaned_data
+    # def clean_image(self):
+    #     """Валидация названия."""
+    #
+    #     image = self.cleaned_data.get("image")
+    #     max_size = 5 * 1024 * 1024  # 5MB
+    #     valid_formats = ["jpeg", "jpg", "png"]
+    #     file_extension = image.name.split(".")[-1].lower()  # Получаем расширение файла
+    #
+    #     if file_extension not in valid_formats:
+    #         raise ValidationError(
+    #             "Недопустимый формат изображения. Разрешены: .jpeg, .jpg, .png"
+    #         )
+    #
+    #     if image and image.size > max_size:
+    #         self.add_error("image", "Размер изображения не должен превышать 5MB.")
+    #
+    #     # if Product.objects.filter(name=name).exists():
+    #     #     raise ValidationError("Продукт с таким названием уже существует")
+    #     return image
 
     def clean_price(self):
         """
