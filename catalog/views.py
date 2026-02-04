@@ -1,14 +1,18 @@
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
+from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.decorators.cache import cache_page
 from django.views.generic import ListView, DetailView, TemplateView
 from django.urls import reverse_lazy, reverse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from catalog.models import Product, Category
 from catalog.forms import ProductForm, CheckboxForm, ProductsModeratorForm, ModerationProductForm
+from catalog.services import get_list_products
 
 
 class ProductListView(ListView):
@@ -16,7 +20,17 @@ class ProductListView(ListView):
     template_name = "catalog/product_list.html"
     context_object_name = "products"
 
+    # низкоуровневое кеширование списка продуктов
+    def get_queryset(self):
+        queryset = cache.get("products_queryset")
+        if not queryset:
+            queryset = super().get_queryset()
+            cache.set('products_queryset', queryset, 1)  # Кешируем данные на 15 минут
+        return queryset
 
+
+# кеширование страницы отображения информации об одном продукте
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class ProductDetailView(DetailView):
     model = Product
     template_name = "catalog/product_detail.html"
@@ -54,14 +68,6 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     def checkbox(request):
         form = CheckboxForm()
         return render(request, "product_form.html", {"form": form})
-
-    # def post(self, request, *args, **kwargs):
-    #     self.object = self.get_object()
-    #     if self.object.owner != request.user:
-    #         return HttpResponseForbidden("У вас нет прав для редактирования этого продукта.")
-    #     if request.user.has_perm('catalog.can_unpublish_product'):
-    #         return ProductsModeratorForm
-    #     return super().post(request, *args, **kwargs)
 
     def get_form_class(self):
         user = self.request.user
@@ -130,3 +136,20 @@ def form_to_add_product(request):
         request,
         "catalog/form.html",
     )
+
+
+class ListProductsInCategory(DetailView):
+    model = Category
+    template_name = 'catalog/products_by_category.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category_id = self.kwargs.get('pk')
+        context["categories"] = get_list_products(category_id)
+        return context
+
+
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'catalog/categories_list.html'
+    context_object_name = 'categories'
