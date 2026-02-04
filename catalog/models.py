@@ -90,3 +90,4 @@ class Product(models.Model):
             ("can_unpublish_product", "Can unpublish product"),
             ("can_delete_product", "Can delete product"),
         ]
+
